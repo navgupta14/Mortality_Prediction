@@ -51,9 +51,25 @@ lda = LatentDirichletAllocation(n_topics=n_topics, max_iter=5,
                                 random_state=0)
 
 predict = lda.fit_transform(tf)
+
+with open("../../data/text_features.csv", "w") as text_features:
+    csv_writer = csv.writer(text_features)
+    row_header = ["hadm_id"]
+
+    for i in range(1, 51):
+        row_header.append("Topic"+str(i))
+
+    csv_writer.write(row_header)
+
+    for i in range(len(hadm_id_list)):
+        row = []
+        row.append(hadm_id_list[i])
+        for distr in predict[i]:
+            row.append(distr)
+        csv_writer.writerow(row)
+
 print("Time for lda fit transform = %0.3fs" % (time() - t0))
 
 print("\nTopics in LDA model:")
 tf_feature_names = tf_vectorizer.get_feature_names()
 print_top_words(lda, tf_feature_names, n_top_words)
-
