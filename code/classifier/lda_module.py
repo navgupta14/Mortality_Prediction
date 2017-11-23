@@ -35,16 +35,14 @@ print("Time for creating hadm and notes lists = %0.3fs" % (time() - t0))
 
 t0 = time()
 print("Extracting tf features for LDA...")
-tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2,
-                                   max_features=n_features,
-                                   stop_words='english')
-'''
+
+
 tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2,
                                 max_features=n_features,
                                 stop_words='english')
-'''
 
-tf = tfidf_vectorizer.fit_transform(notes_list)
+
+tf = tf_vectorizer.fit_transform(notes_list)
 print("Time for tf fit transform = %0.3fs" % (time() - t0))
 
 
@@ -78,5 +76,5 @@ with open("../../data/text_features.csv", "w") as text_features:
 print("Time for writing LDA distributions = %0.3fs" % (time() - t0))
 
 print("\nTopics in LDA model:")
-tf_feature_names = tfidf_vectorizer.get_feature_names()
+tf_feature_names = tf_vectorizer.get_feature_names()
 print_top_words(lda, tf_feature_names, n_top_words)
