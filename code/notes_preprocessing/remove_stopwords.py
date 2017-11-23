@@ -38,6 +38,7 @@ def main():
                 #print(row)
                 note = row[10]
                 note = re.sub(r"\d+", "", note)
+                note = re.sub(r"_", "", note)
                 split_note = re.split(r"\s|,|\.", note)
                 #print(split_note)
                 #print(len(split_note))
