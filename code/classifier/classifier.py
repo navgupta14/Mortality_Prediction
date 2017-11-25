@@ -7,6 +7,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.metrics import auc, roc_auc_score, roc_curve, precision_recall_curve, precision_recall_fscore_support
 from sklearn import svm
+from sklearn import tree
 from sklearn.model_selection import cross_val_score
 from sklearn.externals import joblib
 import logging
@@ -111,7 +112,8 @@ for i in range(len(test_data_features_list)):
 #Classifiers
 svm = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
 lr = LogisticRegression(random_state=1, verbose=True)
-rfc = RandomForestClassifier(random_state=1)
+rfc = RandomForestClassifier(random_state=1, verbose=True)
+dt = tree.DecisionTreeClassifier(verbose=True)
 
 # Ensemble Classifier
 eclf = VotingClassifier(estimators=[
@@ -119,10 +121,12 @@ eclf = VotingClassifier(estimators=[
 ], voting='soft', weights=[0.3, 0.3, 0.4])
 
 # Training
-eclf.fit(training_data_features_list, training_output)
-#svm.fit(training_data_features_list, training_output)
+#eclf.fit(training_data_features_list, training_output)
+dt.fit(training_data_features_list, training_output)
 # Accuracy score
-accuracy_score = eclf.score(test_data_features_list, test_output)
+#accuracy_score = eclf.score(test_data_features_list, test_output)
+accuracy_score = dt.score(test_data_features_list, test_output)
+
 score_str = "Accuracy Score = %s" % accuracy_score
 f.write("\n" + score_str)
 
