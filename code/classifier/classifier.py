@@ -75,7 +75,7 @@ train_notes_features.append(np.array(train_data.Topic48))
 train_notes_features.append(np.array(train_data.Topic49))
 train_notes_features.append(np.array(train_data.Topic50))
 
-training_notes_features_list = list(map(list, zip(*train_notes_features)))
+#training_notes_features_list = list(map(list, zip(*train_notes_features)))
 
 train_age = np.array(train_data.age)
 train_gender = np.array(train_data.gender)
@@ -93,12 +93,16 @@ test_data_features_list = [train_age[30000:], train_gender[30000:], train_saps2[
 test_output = train_output[30000:]
 
 training_data_features_list = list(map(list, zip(*training_data_features_list)))
+'''
 for i in range(len(training_data_features_list)):
     training_data_features_list[i].extend(training_notes_features_list[i])
-
+'''
 test_data_features_list = list(map(list, zip(*test_data_features_list)))
+
+'''
 for i in range(len(test_data_features_list)):
     test_data_features_list[i].extend(training_notes_features_list[i])
+'''
 
 # stacking selected features.
 #final_training_data = sp.hstack(training_data_features_list)
