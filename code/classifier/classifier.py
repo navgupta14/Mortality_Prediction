@@ -113,7 +113,7 @@ for i in range(len(test_data_features_list)):
 svm = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
 lr = LogisticRegression(random_state=1, verbose=True)
 rfc = RandomForestClassifier(random_state=1, verbose=True)
-dt = tree.DecisionTreeClassifier(verbose=True)
+dt = tree.DecisionTreeClassifier()
 
 # Ensemble Classifier
 eclf = VotingClassifier(estimators=[
