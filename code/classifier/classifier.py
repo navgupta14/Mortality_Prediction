@@ -118,7 +118,7 @@ eclf = VotingClassifier(estimators=[
 eclf.fit(training_data_features_list, training_output)
 #svm.fit(training_data_features_list, training_output)
 # Accuracy score
-accuracy_score = svm.score(test_data_features_list, test_output)
+accuracy_score = eclf.score(test_data_features_list, test_output)
 score_str = "Accuracy Score = %s" % accuracy_score
 f.write("\n" + score_str)
 
