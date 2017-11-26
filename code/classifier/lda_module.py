@@ -48,10 +48,8 @@ print("Time for tf fit transform = %0.3fs" % (time() - t0))
 
 t0 = time()
 print("Fitting LDA models with tf features")
-lda = LatentDirichletAllocation(n_topics=n_topics, max_iter=5,
-                                learning_method='online',
-                                learning_offset=50.,
-                                random_state=0)
+lda = LatentDirichletAllocation(n_topics=n_topics,
+                                learning_method='batch')
 
 predict = lda.fit_transform(tf)
 print("Time for lda fit transform = %0.3fs" % (time() - t0))
