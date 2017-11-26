@@ -13,6 +13,8 @@ from sklearn.externals import joblib
 import logging
 import time
 import scipy.sparse as sp
+from sklearn.preprocessing import normalize
+
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 start_time = time.time()
@@ -104,6 +106,9 @@ test_data_features_list = list(map(list, zip(*test_data_features_list)))
 for i in range(len(test_data_features_list)):
     test_data_features_list[i].extend(training_notes_features_list[i])
 
+
+training_data_features_list = normalize(training_data_features_list)
+test_data_features_list = normalize(test_data_features_list)
 
 # stacking selected features.
 #final_training_data = sp.hstack(training_data_features_list)
