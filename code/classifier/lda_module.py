@@ -25,7 +25,7 @@ notes_list = []
 
 t0 = time()
 print("Creating hadm and notes lists...")
-with open("../../data/consolidated_notes_test.csv") as consolidated_notes:
+with open("../../data/consolidated_notes.csv") as consolidated_notes:
     csv_reader = csv.reader(consolidated_notes)
     for row in csv_reader:
         if (len(row) != 2):
@@ -83,7 +83,7 @@ print_top_words(lda, tf_feature_names, n_top_words)
 
 with open("../../data/lda_words.csv", "w") as lda_words:
     csv_writer = csv.writer(lda_words)
-    with open("../../data/consolidated_notes_test.csv") as consolidated_notes:
+    with open("../../data/consolidated_notes.csv") as consolidated_notes:
         csv_reader = csv.reader(consolidated_notes)
         for row in csv_reader:
             hadm = row[0]
