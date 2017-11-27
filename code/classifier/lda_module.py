@@ -3,16 +3,18 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 import csv
 import sys
+from collections import defaultdict
 from time import time
 
 csv.field_size_limit(sys.maxsize)
-
+final_words = []
 def print_top_words(model, feature_names, n_top_words):
     for topic_idx, topic in enumerate(model.components_):
         print("Topic #%d:" % topic_idx)
-        print(" ".join([feature_names[i]
-                        for i in topic.argsort()[:-n_top_words - 1:-1]]))
-    print()
+        print " ".join([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]])
+        final_words.extend([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]])
+        print final_words
+    return
 
 n_features = 2000
 n_topics = 50
@@ -23,7 +25,7 @@ notes_list = []
 
 t0 = time()
 print("Creating hadm and notes lists...")
-with open("../../data/consolidated_notes.csv") as consolidated_notes:
+with open("../../data/consolidated_notes_test.csv") as consolidated_notes:
     csv_reader = csv.reader(consolidated_notes)
     for row in csv_reader:
         if (len(row) != 2):
@@ -78,3 +80,19 @@ print("Time for writing LDA distributions = %0.3fs" % (time() - t0))
 print("\nTopics in LDA model:")
 tf_feature_names = tf_vectorizer.get_feature_names()
 print_top_words(lda, tf_feature_names, n_top_words)
+
+with open("../../data/lda_words.csv", "w") as lda_words:
+    csv_writer = csv.writer(lda_words)
+    with open("../../data/consolidated_notes_test.csv") as consolidated_notes:
+        csv_reader = csv.reader(consolidated_notes)
+        for row in csv_reader:
+            hadm = row[0]
+            notes = row[1]
+            row_vec = [hadm]
+            notes_words = notes.split()
+            dict = defaultdict(lambda : 0)
+            for word in notes_words:
+                dict[word] += 1
+            for word in final_words:
+                row_vec.append(dict[word])
+            csv_writer.writerow(row_vec)

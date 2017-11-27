@@ -12,6 +12,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.externals import joblib
 import logging
 import time
+import csv
 import scipy.sparse as sp
 from sklearn.preprocessing import normalize
 
@@ -26,57 +27,20 @@ train_data = pd.read_csv('../../data/combined_features.csv')
 f = open("results.log", "a")
 f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- ")
 
-train_notes_features = []
-train_notes_features.append(np.array(train_data.Topic1))
-train_notes_features.append(np.array(train_data.Topic2))
-train_notes_features.append(np.array(train_data.Topic3))
-train_notes_features.append(np.array(train_data.Topic4))
-train_notes_features.append(np.array(train_data.Topic5))
-train_notes_features.append(np.array(train_data.Topic6))
-train_notes_features.append(np.array(train_data.Topic7))
-train_notes_features.append(np.array(train_data.Topic8))
-train_notes_features.append(np.array(train_data.Topic9))
-train_notes_features.append(np.array(train_data.Topic10))
-train_notes_features.append(np.array(train_data.Topic11))
-train_notes_features.append(np.array(train_data.Topic12))
-train_notes_features.append(np.array(train_data.Topic13))
-train_notes_features.append(np.array(train_data.Topic14))
-train_notes_features.append(np.array(train_data.Topic15))
-train_notes_features.append(np.array(train_data.Topic16))
-train_notes_features.append(np.array(train_data.Topic17))
-train_notes_features.append(np.array(train_data.Topic18))
-train_notes_features.append(np.array(train_data.Topic19))
-train_notes_features.append(np.array(train_data.Topic20))
-train_notes_features.append(np.array(train_data.Topic21))
-train_notes_features.append(np.array(train_data.Topic22))
-train_notes_features.append(np.array(train_data.Topic23))
-train_notes_features.append(np.array(train_data.Topic24))
-train_notes_features.append(np.array(train_data.Topic25))
-train_notes_features.append(np.array(train_data.Topic26))
-train_notes_features.append(np.array(train_data.Topic27))
-train_notes_features.append(np.array(train_data.Topic28))
-train_notes_features.append(np.array(train_data.Topic29))
-train_notes_features.append(np.array(train_data.Topic30))
-train_notes_features.append(np.array(train_data.Topic31))
-train_notes_features.append(np.array(train_data.Topic32))
-train_notes_features.append(np.array(train_data.Topic33))
-train_notes_features.append(np.array(train_data.Topic34))
-train_notes_features.append(np.array(train_data.Topic35))
-train_notes_features.append(np.array(train_data.Topic36))
-train_notes_features.append(np.array(train_data.Topic37))
-train_notes_features.append(np.array(train_data.Topic38))
-train_notes_features.append(np.array(train_data.Topic39))
-train_notes_features.append(np.array(train_data.Topic40))
-train_notes_features.append(np.array(train_data.Topic41))
-train_notes_features.append(np.array(train_data.Topic42))
-train_notes_features.append(np.array(train_data.Topic43))
-train_notes_features.append(np.array(train_data.Topic44))
-train_notes_features.append(np.array(train_data.Topic45))
-train_notes_features.append(np.array(train_data.Topic46))
-train_notes_features.append(np.array(train_data.Topic47))
-train_notes_features.append(np.array(train_data.Topic48))
-train_notes_features.append(np.array(train_data.Topic49))
-train_notes_features.append(np.array(train_data.Topic50))
+train_notes_features = [[] for i in range(1000)]
+
+with open("../../data/combined_features.csv") as combined_features:
+    csv_reader = csv.reader(combined_features)
+    first_row = True
+    for row in csv_reader:
+        if first_row:
+            first_row = False
+            continue
+        for i in range(7, 1007):
+            train_notes_features[i - 7].append(row[i])
+
+for i in range(len(train_notes_features)):
+    train_notes_features[i] = np.array(train_notes_features[i])
 
 training_notes_features_list = list(map(list, zip(*train_notes_features)))
 
