@@ -14,147 +14,142 @@ import logging
 import time
 import scipy.sparse as sp
 from sklearn.preprocessing import normalize
+from sklearn.model_selection import KFold
 
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 start_time = time.time()
 logging.info(" ----------- Start Detector ------------")
 
-train_data = pd.read_csv('../../data/combined_features.csv')
+data = pd.read_csv('../../data/combined_features.csv')
 
 
 f = open("results.log", "a")
 f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- ")
 
-train_notes_features = []
-train_notes_features.append(np.array(train_data.Topic1))
-train_notes_features.append(np.array(train_data.Topic2))
-train_notes_features.append(np.array(train_data.Topic3))
-train_notes_features.append(np.array(train_data.Topic4))
-train_notes_features.append(np.array(train_data.Topic5))
-train_notes_features.append(np.array(train_data.Topic6))
-train_notes_features.append(np.array(train_data.Topic7))
-train_notes_features.append(np.array(train_data.Topic8))
-train_notes_features.append(np.array(train_data.Topic9))
-train_notes_features.append(np.array(train_data.Topic10))
-train_notes_features.append(np.array(train_data.Topic11))
-train_notes_features.append(np.array(train_data.Topic12))
-train_notes_features.append(np.array(train_data.Topic13))
-train_notes_features.append(np.array(train_data.Topic14))
-train_notes_features.append(np.array(train_data.Topic15))
-train_notes_features.append(np.array(train_data.Topic16))
-train_notes_features.append(np.array(train_data.Topic17))
-train_notes_features.append(np.array(train_data.Topic18))
-train_notes_features.append(np.array(train_data.Topic19))
-train_notes_features.append(np.array(train_data.Topic20))
-train_notes_features.append(np.array(train_data.Topic21))
-train_notes_features.append(np.array(train_data.Topic22))
-train_notes_features.append(np.array(train_data.Topic23))
-train_notes_features.append(np.array(train_data.Topic24))
-train_notes_features.append(np.array(train_data.Topic25))
-train_notes_features.append(np.array(train_data.Topic26))
-train_notes_features.append(np.array(train_data.Topic27))
-train_notes_features.append(np.array(train_data.Topic28))
-train_notes_features.append(np.array(train_data.Topic29))
-train_notes_features.append(np.array(train_data.Topic30))
-train_notes_features.append(np.array(train_data.Topic31))
-train_notes_features.append(np.array(train_data.Topic32))
-train_notes_features.append(np.array(train_data.Topic33))
-train_notes_features.append(np.array(train_data.Topic34))
-train_notes_features.append(np.array(train_data.Topic35))
-train_notes_features.append(np.array(train_data.Topic36))
-train_notes_features.append(np.array(train_data.Topic37))
-train_notes_features.append(np.array(train_data.Topic38))
-train_notes_features.append(np.array(train_data.Topic39))
-train_notes_features.append(np.array(train_data.Topic40))
-train_notes_features.append(np.array(train_data.Topic41))
-train_notes_features.append(np.array(train_data.Topic42))
-train_notes_features.append(np.array(train_data.Topic43))
-train_notes_features.append(np.array(train_data.Topic44))
-train_notes_features.append(np.array(train_data.Topic45))
-train_notes_features.append(np.array(train_data.Topic46))
-train_notes_features.append(np.array(train_data.Topic47))
-train_notes_features.append(np.array(train_data.Topic48))
-train_notes_features.append(np.array(train_data.Topic49))
-train_notes_features.append(np.array(train_data.Topic50))
+notes_features = []
+notes_features.append(np.array(data.Topic1))
+notes_features.append(np.array(data.Topic2))
+notes_features.append(np.array(data.Topic3))
+notes_features.append(np.array(data.Topic4))
+notes_features.append(np.array(data.Topic5))
+notes_features.append(np.array(data.Topic6))
+notes_features.append(np.array(data.Topic7))
+notes_features.append(np.array(data.Topic8))
+notes_features.append(np.array(data.Topic9))
+notes_features.append(np.array(data.Topic10))
+notes_features.append(np.array(data.Topic11))
+notes_features.append(np.array(data.Topic12))
+notes_features.append(np.array(data.Topic13))
+notes_features.append(np.array(data.Topic14))
+notes_features.append(np.array(data.Topic15))
+notes_features.append(np.array(data.Topic16))
+notes_features.append(np.array(data.Topic17))
+notes_features.append(np.array(data.Topic18))
+notes_features.append(np.array(data.Topic19))
+notes_features.append(np.array(data.Topic20))
+notes_features.append(np.array(data.Topic21))
+notes_features.append(np.array(data.Topic22))
+notes_features.append(np.array(data.Topic23))
+notes_features.append(np.array(data.Topic24))
+notes_features.append(np.array(data.Topic25))
+notes_features.append(np.array(data.Topic26))
+notes_features.append(np.array(data.Topic27))
+notes_features.append(np.array(data.Topic28))
+notes_features.append(np.array(data.Topic29))
+notes_features.append(np.array(data.Topic30))
+notes_features.append(np.array(data.Topic31))
+notes_features.append(np.array(data.Topic32))
+notes_features.append(np.array(data.Topic33))
+notes_features.append(np.array(data.Topic34))
+notes_features.append(np.array(data.Topic35))
+notes_features.append(np.array(data.Topic36))
+notes_features.append(np.array(data.Topic37))
+notes_features.append(np.array(data.Topic38))
+notes_features.append(np.array(data.Topic39))
+notes_features.append(np.array(data.Topic40))
+notes_features.append(np.array(data.Topic41))
+notes_features.append(np.array(data.Topic42))
+notes_features.append(np.array(data.Topic43))
+notes_features.append(np.array(data.Topic44))
+notes_features.append(np.array(data.Topic45))
+notes_features.append(np.array(data.Topic46))
+notes_features.append(np.array(data.Topic47))
+notes_features.append(np.array(data.Topic48))
+notes_features.append(np.array(data.Topic49))
+notes_features.append(np.array(data.Topic50))
 
-training_notes_features_list = list(map(list, zip(*train_notes_features)))
 
-train_age = np.array(train_data.age)
-train_gender = np.array(train_data.gender)
-train_saps2 = np.array(train_data.saps2)
-train_oasis = np.array(train_data.oasis)
-train_apsiii = np.array(train_data.apsiii)
-train_output = np.array(train_data.expired)
+notes_features_list = list(map(list, zip(*notes_features)))
 
-training_data_features_list = [train_age[:30000], train_gender[:30000], train_saps2[:30000], train_oasis[:30000], train_apsiii
-                               [:30000]]
-training_output = train_output[:30000]
+age = np.array(data.age)
+gender = np.array(data.gender)
+saps2 = np.array(data.saps2)
+oasis = np.array(data.oasis)
+apsiii = np.array(data.apsiii)
+
+#Y
+total_output = np.array(data.expired)
+
+#X
+total_data_features_list = [age, gender, saps2, oasis, apsiii]
 #training_data_features_list = normalize(training_data_features_list)
 
-test_data_features_list = [train_age[30000:], train_gender[30000:], train_saps2[30000:], train_oasis[30000:], train_apsiii
-                               [30000:]]
-test_output = train_output[30000:]
-#test_data_features_list = normalize(test_data_features_list)
 
-training_data_features_list = list(map(list, zip(*training_data_features_list)))
+total_data_features_list = list(map(list, zip(*total_data_features_list)))
 
-for i in range(len(training_data_features_list)):
-    training_data_features_list[i].extend(training_notes_features_list[i])
-
-test_data_features_list = list(map(list, zip(*test_data_features_list)))
+for i in range(len(total_data_features_list)):
+    total_data_features_list[i].extend(notes_features_list[i])
 
 
-for i in range(len(test_data_features_list)):
-    test_data_features_list[i].extend(training_notes_features_list[i])
+X = np.array(total_data_features_list)
+Y = np.array(total_output)
+
+kf = KFold(n_splits=10)
+
+for train_index, test_index in kf.split(Y):
+    X_train, X_test = X[train_index], X[test_index]
+    Y_train, Y_test = Y[train_index], Y[test_index]
 
 
-#training_data_features_list = normalize(training_data_features_list)
-#test_data_features_list = normalize(test_data_features_list)
+    #Classifiers
+    svm = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
+    lr = LogisticRegression(random_state=1, verbose=True)
+    rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 
-# stacking selected features.
-#final_training_data = sp.hstack(training_data_features_list)
-#final_test_data = sp.hstack(test_data_features_list)
+    # Ensemble Classifier
+    eclf = VotingClassifier(estimators=[
+        ('svm', svm), ('lr', lr)
+    ], voting='soft', weights=[0.5, 0.5])
 
-#Classifiers
-svm = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
-lr = LogisticRegression(random_state=1, verbose=True)
-rfc = RandomForestClassifier(random_state=1, verbose=True)
-dt = tree.DecisionTreeClassifier()
 
-# Ensemble Classifier
-eclf = VotingClassifier(estimators=[
-    ('svm', svm), ('lr', lr), ('rfc', rfc)
-], voting='soft', weights=[0.3, 0.3, 0.4])
+    # Training
+    eclf.fit(X_train, Y_train)
 
-#Testing LR
-eclf = lr
+    # Accuracy score
+    accuracy_score = eclf.score(X_test, Y_test)
 
-# Training
-eclf.fit(training_data_features_list, training_output)
+    score_str = "Accuracy Score = %s" % accuracy_score
+    f.write("\n" + score_str)
 
-# Accuracy score
-accuracy_score = eclf.score(test_data_features_list, test_output)
+    print(score_str)
 
-score_str = "Accuracy Score = %s" % accuracy_score
-f.write("\n" + score_str)
+    predictions = eclf.predict_proba(X_test)
+    predict_ans = eclf.predict(X_test)
+    expired_predictions = predictions[:, 1]
+    print(eclf.classes_)
+    false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, expired_predictions)
+    auc_roc = auc(false_positive_rate, true_positive_rate)
+    auc_str = "AUC_ROC = %s" % auc_roc
+    f.write("\n" + auc_str)
+    print("Test data auc(roc curve) : ", auc_roc)
 
-print(score_str)
+    precision, recall, thresholds = precision_recall_curve(Y_test, expired_predictions)
+    print("Test data auc(PR curve) : ", auc(recall, precision))
+    print("(PRF)macro : ", precision_recall_fscore_support(Y_test, predict_ans, average='macro'))
+    print("(PRF)micro : ", precision_recall_fscore_support(Y_test, predict_ans, average='micro'))
+    print("(PRF) : ", precision_recall_fscore_support(Y_test, predict_ans, labels=[0, 1]))
 
-predictions = eclf.predict_proba(test_data_features_list)
-predict_ans = eclf.predict(test_data_features_list)
-expired_predictions = predictions[:, 1]
-false_positive_rate, true_positive_rate, thresholds = roc_curve(test_output, expired_predictions)
-auc_roc = auc(false_positive_rate, true_positive_rate)
-auc_str = "AUC_ROC = %s" % auc_roc
-f.write("\n" + auc_str)
-print("Test data auc(roc curve) : ", auc_roc)
-
-precision, recall, thresholds = precision_recall_curve(test_output, expired_predictions)
-print("Test data auc(PR curve) : ", auc(recall, precision))
-print("(PRF)macro : ", precision_recall_fscore_support(test_output, predict_ans, average='macro'))
-print("(PRF)micro : ", precision_recall_fscore_support(test_output, predict_ans, average='micro'))
-print("(PRF) : ", precision_recall_fscore_support(test_output, predict_ans, labels=[0, 1]))
 f.write("\n\n ---------------------------- END EXECUTION ---------------------------- \n\n")
 f.close()
 logging.info(" ----------- End Detector ------------")

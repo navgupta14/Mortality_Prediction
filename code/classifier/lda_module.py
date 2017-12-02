@@ -37,9 +37,7 @@ t0 = time()
 print("Extracting tf features for LDA...")
 
 
-tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2,
-                                max_features=n_features,
-                                stop_words='english')
+tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2)
 
 
 tf = tf_vectorizer.fit_transform(notes_list)
