@@ -28,12 +28,12 @@ def main():
             split_notes = value.split()
             legal_notes = []
 
-        for w in split_notes:
-            if w not in illegal_words:
-                legal_notes.append(w)
+            for w in split_notes:
+                if w not in illegal_words:
+                    legal_notes.append(w)
 
-        value = " ".join(legal_notes)
-        csv_writer.writerow([key, value])
+            value = " ".join(legal_notes)
+            csv_writer.writerow([key, value])
 
 if __name__ == "__main__":
     main()
