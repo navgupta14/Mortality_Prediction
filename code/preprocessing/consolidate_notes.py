@@ -4,10 +4,10 @@ import csv
 def main():
     hadm_id_notes_dict = defaultdict(lambda :"")
     baseline_hadm_id_set = set()
-    legal_words = []
-    with open("../../data/legal_word_list") as legal_words_file:
-	legal_words_string = legal_words_string.readline()
-	legal_words = legal_words_string.split()
+    illegal_words = []
+    with open("../../data/illegal_word_list") as illegal_words_file:
+        illegal_words_string = illegal_words_file.readline()
+        illegal_words = illegal_words_string.split()
 
     with open("../../data/final_baseline_features.csv") as baseline:
         csv_reader = csv.reader(baseline)
@@ -25,14 +25,15 @@ def main():
     with open("../../data/consolidated_notes.csv", "w") as consolidated_notes:
         csv_writer = csv.writer(consolidated_notes)
         for key, value in hadm_id_notes_dict.items():
-            	split_notes = value.split()
-                legal_notes = []
-		for w in split_notes:
-			if w in legal_words:
-				legal_notes.append(w)
+            split_notes = value.split()
+            legal_notes = []
 
-		value = " ".join(legal_notes)
-		csv_writer.writerow([key, value])
+        for w in split_notes:
+            if w not in illegal_words:
+                legal_notes.append(w)
+
+        value = " ".join(legal_notes)
+        csv_writer.writerow([key, value])
 
 if __name__ == "__main__":
     main()
