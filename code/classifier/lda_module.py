@@ -14,7 +14,7 @@ def print_top_words(model, feature_names, n_top_words):
                         for i in topic.argsort()[:-n_top_words - 1:-1]]))
     print()
 
-n_features = 2000
+n_features = 1000
 n_topics = 50
 n_top_words = 20
 
