@@ -26,6 +26,7 @@ def main():
     uncommon_non_stop_words = set()
     all_notes_blob = ""
     first_line = True
+    all_notes_blob_split = []
     with open(input_csv_file) as csv_input:
         csv_reader = csv.reader(csv_input)
         with open(output_csv_file, "w") as csv_output:
@@ -41,9 +42,9 @@ def main():
                 note = row[10]
                 #note = re.sub(r"\d+", "", note)
                 #note = re.sub(r"_", "", note)
-		note = re.sub(r"[^0-9a-zA-Z]+", " ", note)
-		note = re.sub(r"\s", " ", note)
-		split_note = re.split(r" ", note)
+                note = re.sub(r"[^0-9a-zA-Z]+", " ", note)
+                note = re.sub(r"\s", " ", note)
+                split_note = re.split(r" ", note)
 		
                 #print(split_note)
                 #print(len(split_note))
@@ -52,31 +53,33 @@ def main():
                     if len(word) > 3:
                         non_stopword_list.append(word)
 
+                all_notes_blob_split.extend(non_stopword_list)
                 final_note = " ".join(non_stopword_list)
-                all_notes_blob += final_note + " "
-		row[10] = final_note
+                #all_notes_blob += final_note + " "
+                row[10] = final_note
                 csv_writer.writerow(row)
                 #print(row)
                 #break
 
-    all_notes_blob_split = re.split(r" ", all_notes_blob)
+    #all_notes_blob_split = re.split(r" ", all_notes_blob)
     word_counts = Counter(all_notes_blob_split)
     
     print("Word Count Size = ", len(word_counts.most_common())) 
     print(word_counts.most_common()) 
     current_count = 0
     for w in word_counts.most_common():
-	if (current_count < 100):
-		current_count += 1
-		continue
+        if (current_count < 100):
+            current_count += 1
+            continue
 
-	if w[0] not in stopwords_set:
-		uncommon_non_stop_words.add(w[0])
+
+        if w[0] not in stopwords_set:
+            uncommon_non_stop_words.add(w[0])
     
     print(len(uncommon_non_stop_words))
     string_to_write = " ".join(uncommon_non_stop_words)
     with open("../../data/legal_word_list", "w") as legal_words:
-	legal_words.write(string_to_write)
+        legal_words.write(string_to_write)
 
 if __name__ == "__main__":
     main()
