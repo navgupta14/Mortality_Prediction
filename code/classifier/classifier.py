@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.metrics import auc, roc_curve, classification_report
+from sklearn.preprocessing import normalize
 from sklearn import svm
 import logging
 import time
@@ -47,6 +48,11 @@ apsiii = np.array(data.apsiii)
 #X -- combining structured and unstructured features
 total_data_features_list = [age, gender, saps2, oasis, apsiii]
 total_data_features_list = list(map(list, zip(*total_data_features_list)))
+# Uncomment to enable normalization
+#total_data_features_list = list(normalize(total_data_features_list))
+#for i in range(len(total_data_features_list)):
+#    total_data_features_list[i] = list(total_data_features_list[i])
+   
 
 #Comment this block for only baseline features
 f.write("Include LDA.\n")
@@ -68,7 +74,7 @@ rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 # Ensemble Classifier
 eclf = VotingClassifier(estimators=[
     ('svmClassifier', svmClassifier), ('lr', lr), ('rfc', rfc)
-], voting='soft', weights=[0.3, 0.3, 0.4])
+], voting='soft', weights=[0.2, 0.5, 0.3])
 
 
 scoring_metrics = {'acc': 'accuracy',
@@ -78,12 +84,12 @@ scoring_metrics = {'acc': 'accuracy',
                    'aucroc': 'roc_auc'}
 
 #Uncomment the below line to only enable LR
-eclf = lr
+#eclf = lr
 
 logging.info("Classifier information: " + str(eclf))
 f.write("Classifier information: " + str(eclf) + "\n")
 
-scores = cross_validate(eclf, X, Y, cv=5, scoring=scoring_metrics, n_jobs=-1)
+scores = cross_validate(eclf, X, Y, cv=10, scoring=scoring_metrics, n_jobs=-1)
 
 
 #Print Scores for different metrics
