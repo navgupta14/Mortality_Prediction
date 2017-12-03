@@ -358,3 +358,25 @@ Max AUCROC is 0.750817200039. Average AUCROC is 0.745280169292
 
  ---------------------------- END EXECUTION ---------------------------- 
 
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+Include LDA.
+Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)
+Accuracy: [ 0.74381176  0.74409128  0.74949063  0.74816626  0.75445746]
+Precision: [ 0.72366105  0.72706422  0.74202058  0.72752248  0.7396284 ]
+Recall: [ 0.67023754  0.66441546  0.65510014  0.67838845  0.67691591]
+F1: [ 0.69592552  0.69432952  0.69585652  0.70209689  0.70688397]
+AUCROC: [ 0.81939944  0.82171079  0.82567743  0.82192667  0.82767142]
+Max Accuracy is 0.754457463067. Average Accuracy is 0.748003476889
+Max Precision is 0.742020575046. Average Precision is 0.731979345594
+Max Recall is 0.678388448999. Average Recall is 0.669011500508
+Max F1 is 0.706883969837. Average F1 is 0.699018485712
+Max AUCROC is 0.827671420495. Average AUCROC is 0.823277149271
+
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
