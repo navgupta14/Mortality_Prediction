@@ -49,10 +49,10 @@ total_data_features_list = [age, gender, saps2, oasis, apsiii]
 total_data_features_list = list(map(list, zip(*total_data_features_list)))
 
 #Comment this block for only baseline features
-#f.write("Include LDA.\n")
-#logging.info("Include LDA")
-#for i in range(len(total_data_features_list)):
-#    total_data_features_list[i].extend(notes_features_list[i])
+f.write("Include LDA.\n")
+logging.info("Include LDA")
+for i in range(len(total_data_features_list)):
+    total_data_features_list[i].extend(notes_features_list[i])
 
 #Y
 total_output = np.array(data.expired)
