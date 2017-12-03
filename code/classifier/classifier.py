@@ -6,7 +6,7 @@ from sklearn.metrics import auc, roc_curve, classification_report
 from sklearn import svm
 import logging
 import time
-from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_validate
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 start_time = time.time()
@@ -16,7 +16,7 @@ logging.info(" ----------- Start Classifier ------------")
 data = pd.read_csv('../../data/combined_features.csv')
 
 f = open("results.log", "a")
-f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- ")
+f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- \n")
 
 # 50 lda topics distribution from notes.
 notes_features = [np.array(data.Topic1), np.array(data.Topic2), np.array(data.Topic3), np.array(data.Topic4),
@@ -47,8 +47,12 @@ apsiii = np.array(data.apsiii)
 #X -- combining structured and unstructured features
 total_data_features_list = [age, gender, saps2, oasis, apsiii]
 total_data_features_list = list(map(list, zip(*total_data_features_list)))
-for i in range(len(total_data_features_list)):
-    total_data_features_list[i].extend(notes_features_list[i])
+
+#Comment this block for only baseline features
+#f.write("Include LDA.\n")
+#logging.info("Include LDA")
+#for i in range(len(total_data_features_list)):
+#    total_data_features_list[i].extend(notes_features_list[i])
 
 #Y
 total_output = np.array(data.expired)
@@ -56,42 +60,81 @@ total_output = np.array(data.expired)
 X = np.array(total_data_features_list)
 Y = np.array(total_output)
 
-kf = KFold(n_splits=10)
+#Classifiers
+svmClassifier = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
+lr = LogisticRegression(random_state=1, verbose=True)
+rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 
-for train_index, test_index in kf.split(Y):
-    X_train, X_test = X[train_index], X[test_index]
-    Y_train, Y_test = Y[train_index], Y[test_index]
+# Ensemble Classifier
+eclf = VotingClassifier(estimators=[
+    ('svmClassifier', svmClassifier), ('lr', lr), ('rfc', rfc)
+], voting='soft', weights=[0.5, 0.5])
 
-    #Classifiers
-    svmClassifier = svm.SVC(C=0.3,kernel='linear',probability=True, verbose=True)
-    lr = LogisticRegression(random_state=1, verbose=True)
-    rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 
-    # Ensemble Classifier
-    eclf = VotingClassifier(estimators=[
-        ('svmClassifier', svmClassifier), ('lr', lr)
-    ], voting='soft', weights=[0.5, 0.5])
+scoring_metrics = {'acc': 'accuracy',
+                   'prec': 'precision',
+                   'rec': 'recall',
+                   'f1': 'f1',
+                   'aucroc': 'roc_auc'}
 
-    # Training
-    eclf.fit(X_train, Y_train)
+#Uncomment the below line to only enable LR
+eclf = lr
 
-    # Accuracy score
-    accuracy_score = eclf.score(X_test, Y_test)
+logging.info("Classifier information: " + str(eclf))
+f.write("Classifier information: " + str(eclf) + "\n")
 
-    score_str = "Accuracy Score = %s" % accuracy_score
-    f.write("\n" + score_str)
-    logging.info(score_str)
+scores = cross_validate(eclf, X, Y, cv=5, scoring=scoring_metrics, n_jobs=-1)
 
-    prediction_probs = eclf.predict_proba(X_test)
-    expired_predictions = prediction_probs[:, 1]
-    false_positive_rate, true_positive_rate, thresholds = roc_curve(Y_test, expired_predictions)
-    auc_roc = auc(false_positive_rate, true_positive_rate)
-    auc_str = "AUC_ROC = %s" % auc_roc
-    f.write("\n" + auc_str)
-    logging.info(auc_str)
 
-    predictions = eclf.predict(X_test)
-    logging.info(classification_report(Y_test, predictions, labels=[0, 1], target_names=["class living", "class expired"]))
+#Print Scores for different metrics
+acc_score = scores['test_acc']
+prec_score = scores['test_prec']
+recall_score = scores['test_rec']
+f1_score = scores['test_f1']
+aucroc_score = scores['test_aucroc']
+
+acc_str = "Accuracy: " + str(acc_score) + "\n"
+prec_str = "Precision: " + str(prec_score) + "\n"
+recall_str = "Recall: " + str(recall_score) + "\n"
+f1_str = "F1: " + str(f1_score) + "\n"
+aucroc_str = "AUCROC: " + str(aucroc_score) + "\n"
+
+f.write(acc_str)
+f.write(prec_str)
+f.write(recall_str)
+f.write(f1_str)
+f.write(aucroc_str)
+
+logging.info(acc_str)
+logging.info(prec_str)
+logging.info(recall_str)
+logging.info(f1_str)
+logging.info(aucroc_str)
+
+#Print max and average scores for different metrics
+max_acc, avg_acc = str(max(acc_score)), str(np.mean(np.array(acc_score)))
+max_prec, avg_prec = str(max(prec_score)), str(np.mean(np.array(prec_score)))
+max_recall, avg_recall = str(max(recall_score)), str(np.mean(np.array(recall_score)))
+max_f1, avg_f1 = str(max(f1_score)), str(np.mean(np.array(f1_score)))
+max_aucroc, avg_aucroc = str(max(aucroc_score)), str(np.mean(np.array(aucroc_score)))
+
+acc_str = "Max Accuracy is " + str(max_acc) + ". Average Accuracy is " + str(avg_acc) + "\n"
+prec_str = "Max Precision is " + str(max_prec) + ". Average Precision is " + str(avg_prec) + "\n"
+recall_str = "Max Recall is " + str(max_recall) + ". Average Recall is " + str(avg_recall) + "\n"
+f1_str = "Max F1 is " + str(max_f1) + ". Average F1 is " + str(avg_f1) + "\n"
+aucroc_str = "Max AUCROC is " + str(max_aucroc) + ". Average AUCROC is " + str(avg_aucroc) + "\n"
+
+f.write(acc_str)
+f.write(prec_str)
+f.write(recall_str)
+f.write(f1_str)
+f.write(aucroc_str)
+
+logging.info(acc_str)
+logging.info(prec_str)
+logging.info(recall_str)
+logging.info(f1_str)
+logging.info(aucroc_str)
 
 f.write("\n\n ---------------------------- END EXECUTION ---------------------------- \n\n")
 f.close()
