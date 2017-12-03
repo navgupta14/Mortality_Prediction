@@ -16,7 +16,7 @@ logging.info(" ----------- Start Classifier ------------")
 data = pd.read_csv('../../data/combined_features.csv')
 
 f = open("results.log", "a")
-f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- ")
+f.write("\n\n ---------------------------- BEGIN EXECUTION ---------------------------- \n")
 
 # 50 lda topics distribution from notes.
 notes_features = [np.array(data.Topic1), np.array(data.Topic2), np.array(data.Topic3), np.array(data.Topic4),
@@ -47,8 +47,12 @@ apsiii = np.array(data.apsiii)
 #X -- combining structured and unstructured features
 total_data_features_list = [age, gender, saps2, oasis, apsiii]
 total_data_features_list = list(map(list, zip(*total_data_features_list)))
-for i in range(len(total_data_features_list)):
-    total_data_features_list[i].extend(notes_features_list[i])
+
+#Comment this block for only baseline features
+#f.write("Include LDA.\n")
+#logging.info("Include LDA")
+#for i in range(len(total_data_features_list)):
+#    total_data_features_list[i].extend(notes_features_list[i])
 
 #Y
 total_output = np.array(data.expired)
@@ -63,8 +67,9 @@ rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 
 # Ensemble Classifier
 eclf = VotingClassifier(estimators=[
-    ('svmClassifier', svmClassifier), ('lr', lr)
+    ('svmClassifier', svmClassifier), ('lr', lr), ('rfc', rfc)
 ], voting='soft', weights=[0.5, 0.5])
+
 
 scoring_metrics = {'acc': 'accuracy',
                    'prec': 'precision',
@@ -72,9 +77,65 @@ scoring_metrics = {'acc': 'accuracy',
                    'f1': 'f1',
                    'aucroc': 'roc_auc'}
 
+#Uncomment the below line to only enable LR
 eclf = lr
-scores = cross_validate(eclf, X, Y, cv=5, scoring=scoring_metrics)
-print(scores['acc'])
+
+logging.info("Classifier information: " + str(eclf))
+f.write("Classifier information: " + str(eclf) + "\n")
+
+scores = cross_validate(eclf, X, Y, cv=5, scoring=scoring_metrics, n_jobs=-1)
+
+
+#Print Scores for different metrics
+acc_score = scores['test_acc']
+prec_score = scores['test_prec']
+recall_score = scores['test_rec']
+f1_score = scores['test_f1']
+aucroc_score = scores['test_aucroc']
+
+acc_str = "Accuracy: " + str(acc_score) + "\n"
+prec_str = "Precision: " + str(prec_score) + "\n"
+recall_str = "Recall: " + str(recall_score) + "\n"
+f1_str = "F1: " + str(f1_score) + "\n"
+aucroc_str = "AUCROC: " + str(aucroc_score) + "\n"
+
+f.write(acc_str)
+f.write(prec_str)
+f.write(recall_str)
+f.write(f1_str)
+f.write(aucroc_str)
+
+logging.info(acc_str)
+logging.info(prec_str)
+logging.info(recall_str)
+logging.info(f1_str)
+logging.info(aucroc_str)
+
+#Print max and average scores for different metrics
+max_acc, avg_acc = str(max(acc_score)), str(np.mean(np.array(acc_score)))
+max_prec, avg_prec = str(max(prec_score)), str(np.mean(np.array(prec_score)))
+max_recall, avg_recall = str(max(recall_score)), str(np.mean(np.array(recall_score)))
+max_f1, avg_f1 = str(max(f1_score)), str(np.mean(np.array(f1_score)))
+max_aucroc, avg_aucroc = str(max(aucroc_score)), str(np.mean(np.array(aucroc_score)))
+
+acc_str = "Max Accuracy is " + str(max_acc) + ". Average Accuracy is " + str(avg_acc) + "\n"
+prec_str = "Max Precision is " + str(max_prec) + ". Average Precision is " + str(avg_prec) + "\n"
+recall_str = "Max Recall is " + str(max_recall) + ". Average Recall is " + str(avg_recall) + "\n"
+f1_str = "Max F1 is " + str(max_f1) + ". Average F1 is " + str(avg_f1) + "\n"
+aucroc_str = "Max AUCROC is " + str(max_aucroc) + ". Average AUCROC is " + str(avg_aucroc) + "\n"
+
+f.write(acc_str)
+f.write(prec_str)
+f.write(recall_str)
+f.write(f1_str)
+f.write(aucroc_str)
+
+logging.info(acc_str)
+logging.info(prec_str)
+logging.info(recall_str)
+logging.info(f1_str)
+logging.info(aucroc_str)
+
 f.write("\n\n ---------------------------- END EXECUTION ---------------------------- \n\n")
 f.close()
 logging.info(" ----------- End Detector ------------")

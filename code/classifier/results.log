@@ -219,3 +219,142 @@ AUC_ROC = 0.749014889775
 
  ---------------------------- END EXECUTION ---------------------------- 
 
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+Accuracy Score = 0.753463732681
+AUC_ROC = 0.829963174035
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.Classifier information: VotingClassifier(estimators=[('svmClassifier', SVC(C=0.3, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto', kernel='linear',
+  max_iter=-1, probability=True, random_state=None, shrinking=True,
+  tol=0.001, verbose=True)), ('lr', LogisticRegression(C=1.0, class_wei...ty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False))],
+         flatten_transform=None, n_jobs=1, voting='soft',
+         weights=[0.5, 0.5])
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)Accuracy: [ 0.75053479  0.74684189  0.7603912   0.75        0.76107998]Precision: [ 0.73979724  0.73293845  0.74682257  0.73797206  0.75207039]Recall: [ 0.66278528  0.66278528  0.68421053  0.66441546  0.67691591]F1: [ 0.69917701  0.69609881  0.71414682  0.69926471  0.71251686]AUCROC: [ 0.8275947   0.82754311  0.8364213   0.8323728   0.83500291]
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- Include LDA.Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)Accuracy: [ 0.75084038  0.74674002  0.76059495  0.75010187  0.76097809]Precision: [ 0.74037461  0.73298969  0.74707677  0.73791677  0.75226743]Recall: [ 0.66278528  0.66231952  0.68444341  0.66488123  0.6762171 ]F1: [ 0.69943475  0.69586494  0.71438989  0.69949773  0.71221786]AUCROC: [ 0.82762822  0.82753906  0.83643079  0.83237752  0.83500393]
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+Include LDA.
+Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)
+Accuracy: [ 0.75094224  0.74684189  0.7603912   0.74979625  0.76097809]
+Precision: [ 0.74031713  0.73293845  0.74694812  0.7377134   0.75226743]
+Recall: [ 0.66325105  0.66278528  0.68397764  0.66418258  0.6762171 ]
+F1: [ 0.69966835  0.69609881  0.71407732  0.69901961  0.71221786]
+AUCROC: [ 0.82761692  0.82754471  0.8364173   0.83239077  0.83500456]
+
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+Include LDA.
+Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)
+Accuracy: [ 0.75084038  0.74674002  0.76059495  0.75        0.76107998]
+Precision: [ 0.74037461  0.73286965  0.74707677  0.73784902  0.75233161]
+Recall: [ 0.66278528  0.6625524   0.68444341  0.66464835  0.67645003]
+F1: [ 0.69943475  0.69593933  0.71438989  0.6993384   0.71237581]
+AUCROC: [ 0.82762763  0.82754556  0.83643084  0.83238558  0.83499823]
+Max Accuracy is 0.761079979623. Average Accuracy is 0.753851064377
+Max Precision is 0.752331606218. Average Precision is 0.742100331009
+Max Recall is 0.684443409408. Average Recall is 0.670175894273
+Max F1 is 0.714389888187. Average F1 is 0.704295636683
+Max AUCROC is 0.836430835915. Average AUCROC is 0.83179756755
+
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
+
+
+ ---------------------------- BEGIN EXECUTION ---------------------------- 
+Classifier information: LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=1, solver='liblinear', tol=0.0001,
+          verbose=True, warm_start=False)
+Accuracy: [ 0.67963736  0.67848411  0.6857172   0.67868786  0.67804381]
+Precision: [ 0.68094488  0.67347561  0.68640148  0.6744186   0.6722408 ]
+Recall: [ 0.50349325  0.51443875  0.51839776  0.51327434  0.51502446]
+F1: [ 0.57892623  0.58331133  0.59068595  0.58291457  0.58322342]
+AUCROC: [ 0.74151992  0.74015084  0.75048173  0.74343115  0.7508172 ]
+Max Accuracy is 0.685717196414. Average Accuracy is 0.680114066961
+Max Precision is 0.686401480111. Average Precision is 0.677496275817
+Max Recall is 0.518397764322. Average Recall is 0.512925711433
+Max F1 is 0.590685949317. Average F1 is 0.583812300544
+Max AUCROC is 0.750817200039. Average AUCROC is 0.745280169292
+
+
+ ---------------------------- END EXECUTION ---------------------------- 
+
