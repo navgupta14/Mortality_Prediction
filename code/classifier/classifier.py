@@ -68,7 +68,7 @@ rfc = RandomForestClassifier(random_state=1, n_estimators=10, verbose=True)
 # Ensemble Classifier
 eclf = VotingClassifier(estimators=[
     ('svmClassifier', svmClassifier), ('lr', lr), ('rfc', rfc)
-], voting='soft', weights=[0.5, 0.5])
+], voting='soft', weights=[0.3, 0.3, 0.4])
 
 
 scoring_metrics = {'acc': 'accuracy',
