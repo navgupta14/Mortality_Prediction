@@ -1,0 +1,2 @@
+DROP VIEW intermediatenotes_pvairamani3;
+create view intermediatenotes_pvairamani3 as (select row_id, subject_id, hadm_id, chartdate, charttime, storetime, category, description, cgid, iserror, lower(regexp_replace(text, E'[\\n\\r]+', ' ', 'g' )) AS text from noteevents); 
